@@ -11,6 +11,7 @@ def run(sourceFolder, outputFolder):
         sourceFile = os.path.join(sourceFolder, filename)
         outputFile = os.path.join(outputFolder, filename)
         image = loadImage(sourceFile)
+        addGrid(image)
         saveImage(outputFile, image)	
 
 def loadImage(sourceFile):
@@ -19,12 +20,25 @@ def loadImage(sourceFile):
     if isPNG(sourceFile):
         return pdb.file_png_load(sourceFile, sourceFile)
 
+def addGrid(image):
+    width = image.width
+    height = image.height
+    #grid_width = min(image.height, image.width) // 1000 + 1
+    grid_width = 1
+    grid_len = 70
+    red = (255,0,0)
+
+    drawable = pdb.gimp_image_get_active_drawable(image)
+    thisLayer = pdb.gimp_layer_new(image, width, height, RGB_IMAGE, "White Layer", 100, NORMAL_MODE)
+    #pdb.gimp_drawable_fill(drawable, WHITE_FILL)
+    layer = image.active_layer
+    #pdb.plug_in_grid(image, drawable, hwidth, hspace, hoffset, hcolor, hopacity, vwidth, vspace, voffset, vcolor, vopacity, iwidth, ispace, ioffset, icolor, iopacity)
+    pdb.plug_in_grid(image, layer, grid_width, grid_len, 0, red, 255, grid_width, grid_len, 0, red, 255, 0, 0, 0, red, 255)
+    #pdb.gimp_image_add_layer(image, layer, 1)
+
 def saveImage(outputFile, image):
     drawable = pdb.gimp_image_get_active_drawable(image)
-    if isJPEG(outputFile):
-		pdb.gimp_file_save(image, drawable, outputFile, '?')
-    if isPNG(outputFile):
-        pdb.gimp_file_save(image, drawable, outputFile, '?')
+    pdb.gimp_file_save(image, drawable, outputFile, '?')
 
 def isJPEG(sourceFile):
 	if sourceFile.count('.jpg') > 0:
