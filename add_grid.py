@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 from gimpfu import *
-def run(sourceFolder, outputFolder):
+def run(sourceFolder, outputFolder, gridColor):
 
     if not os.path.exists(outputFolder):
         os.makedirs(outputFolder)
@@ -11,7 +11,7 @@ def run(sourceFolder, outputFolder):
         sourceFile = os.path.join(sourceFolder, filename)
         outputFile = os.path.join(outputFolder, filename)
         image = loadImage(sourceFile)
-        addGrid(image)
+        addGrid(image, gridColor)
         saveImage(outputFile, image)	
 
 def loadImage(sourceFile):
@@ -20,12 +20,11 @@ def loadImage(sourceFile):
     if isPNG(sourceFile):
         return pdb.file_png_load(sourceFile, sourceFile)
 
-def addGrid(image):
+def addGrid(image, gridColor):
     grid_width = 1
     grid_len = 70
-    red = (255,0,0)
     layer = image.active_layer
-    pdb.plug_in_grid(image, layer, grid_width, grid_len, 0, red, 255, grid_width, grid_len, 0, red, 255, 0, 0, 0, red, 255)
+    pdb.plug_in_grid(image, layer, grid_width, grid_len, 0, gridColor, 255, grid_width, grid_len, 0, gridColor, 255, 0, 0, 0, gridColor, 255)
 
 def saveImage(outputFile, image):
     drawable = pdb.gimp_image_get_active_drawable(image)
@@ -59,7 +58,8 @@ register(
  "",
  [
  (PF_DIRNAME, "sourceFolder", "Source directory", "C:\Users\jcolaco\Pictures\Python Test\Source"),
- (PF_DIRNAME, "outputFolder", "Output directory", "C:\Users\jcolaco\Pictures\Python Test\Out")
+ (PF_DIRNAME, "outputFolder", "Output directory", "C:\Users\jcolaco\Pictures\Python Test\Out"),
+ (PF_COLOR, "gridColor", "select a color:", (0, 128, 255) )
  ],
  [],
  run, menu="<Image>/File/Create")
