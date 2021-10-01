@@ -22,10 +22,8 @@ def loadImage(sourceFile):
         return pdb.file_png_load(sourceFile, sourceFile)
 
 def addGrid(image, gridColor, dpi, lineThickness):
-    grid_width = lineThickness
-    grid_len = dpi
     layer = image.active_layer
-    pdb.plug_in_grid(image, layer, grid_width, grid_len, 0, gridColor, 255, grid_width, grid_len, 0, gridColor, 255, 0, 0, 0, gridColor, 255)
+    pdb.plug_in_grid(image, layer, lineThickness, dpi, 0, gridColor, 255, lineThickness, dpi, 0, gridColor, 255, 0, 0, 0, gridColor, 255)
 
 def saveImage(outputFile, image):
     drawable = pdb.gimp_image_get_active_drawable(image)
