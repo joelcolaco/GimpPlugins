@@ -12,7 +12,7 @@ def run(sourceFolder, outputFolder, gridColor, dpi, lineThickness):
         outputFileName = "Grid_" + filename
         outputFile = os.path.join(outputFolder, outputFileName)
         image = loadImage(sourceFile)
-        addGrid(image, gridColor)
+        addGrid(image, gridColor, dpi, lineThickness)
         saveImage(outputFile, image)	
 
 def loadImage(sourceFile):
@@ -21,9 +21,9 @@ def loadImage(sourceFile):
     if isPNG(sourceFile):
         return pdb.file_png_load(sourceFile, sourceFile)
 
-def addGrid(image, gridColor):
-    grid_width = 1
-    grid_len = 70
+def addGrid(image, gridColor, dpi, lineThickness):
+    grid_width = lineThickness
+    grid_len = dpi
     layer = image.active_layer
     pdb.plug_in_grid(image, layer, grid_width, grid_len, 0, gridColor, 255, grid_width, grid_len, 0, gridColor, 255, 0, 0, 0, gridColor, 255)
 
