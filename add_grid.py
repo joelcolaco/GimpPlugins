@@ -13,7 +13,10 @@ def run(sourceFolder, outputFolder, gridColor, dpi, lineThickness):
         outputFile = os.path.join(outputFolder, outputFileName)
         image = loadImage(sourceFile)
         addGrid(image, gridColor, dpi, lineThickness)
-        saveImage(outputFile, image)	
+        if isJPEG(sourceFile):
+            saveImage(outputFile, image)
+        elif isPNG(sourceFile):
+            savePngImage(outputFile, image)
 
 def loadImage(sourceFile):
     if isJPEG(sourceFile):
@@ -28,6 +31,10 @@ def addGrid(image, gridColor, dpi, lineThickness):
 def saveImage(outputFile, image):
     drawable = pdb.gimp_image_get_active_drawable(image)
     pdb.gimp_file_save(image, drawable, outputFile, '?')
+
+def savePngImage(outputFile, image):
+    drawable = pdb.gimp_image_get_active_drawable(image)
+    pdb.file_png_save(image, drawable, outputFile, '?',0, 6, 0, 0, 0, 0, 0)
 
 def isJPEG(sourceFile):
 	if sourceFile.count('.jpg') > 0:
@@ -56,8 +63,8 @@ register(
  "Generate Grids",
  "",
  [
- (PF_DIRNAME, "sourceFolder", "Source directory", "C:\Users\jcolaco\Pictures\Python Test\Source"),
- (PF_DIRNAME, "outputFolder", "Output directory", "C:\Users\jcolaco\Pictures\Python Test\Out"),
+ (PF_DIRNAME, "sourceFolder", "Source directory", "C:\Temp\Source"),
+ (PF_DIRNAME, "outputFolder", "Output directory", "C:\Temp\Output"),
  (PF_COLOR, "gridColor", "select a color:", (0, 0, 0) ),
  (PF_INT32, "dpi", "DPI", 70),
  (PF_INT32, "lineThickness", "Grid Thickness", 1) 
